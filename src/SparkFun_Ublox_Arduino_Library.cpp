@@ -720,9 +720,15 @@ void SFE_UBLOX_GPS::processUBXpacket(ubxPacket *msg)
       latitude = extractLong(28 - startingSpot);
       altitude = extractLong(32 - startingSpot);
       altitudeMSL = extractLong(36 - startingSpot);
+      velN = extractLong(48 - startingSpot);
+      velE = extractLong(52 - startingSpot);
+      velD = extractLong(56 - startingSpot);
       groundSpeed = extractLong(60 - startingSpot);
       headingOfMotion = extractLong(64 - startingSpot);
+      sAcc = extractLong(68 - startingSpot);
+      headAcc = extractLong(72 - startingSpot);
       pDOP = extractLong(76 - startingSpot);
+
 
       //Mark all datums as fresh (not read before)
       moduleQueried.gpsiTOW = true;
@@ -742,8 +748,13 @@ void SFE_UBLOX_GPS::processUBXpacket(ubxPacket *msg)
       moduleQueried.SIV = true;
       moduleQueried.fixType = true;
       moduleQueried.carrierSolution = true;
+      moduleQueried.velN = true;
+      moduleQueried.velE = true;
+      moduleQueried.velD = true;   
       moduleQueried.groundSpeed = true;
       moduleQueried.headingOfMotion = true;
+      moduleQueried.sAcc = true;
+      moduleQueried.headAcc = true;            
       moduleQueried.pDOP = true;
     }
     else if (msg->id == UBX_NAV_HPPOSLLH && msg->len == 36)
@@ -2553,6 +2564,62 @@ uint16_t SFE_UBLOX_GPS::getPDOP(uint16_t maxWait)
   return (pDOP);
 }
 
+//Get the velocity component on North axis
+int32_t SFE_UBLOX_GPS::getVelN(uint16_t maxWait)
+{
+if (moduleQueried.velN == false)
+    getPVT(maxWait);
+moduleQueried.velN = false; //Since we are about to give this to user, mark this data as stale
+moduleQueried.all = false;
+
+return (velN);
+}
+
+//Get the velocity component on East axis
+int32_t SFE_UBLOX_GPS::getVelE(uint16_t maxWait)
+{
+if (moduleQueried.velE == false)
+    getPVT(maxWait);
+moduleQueried.velE = false; //Since we are about to give this to user, mark this data as stale
+moduleQueried.all = false;
+
+return (velE);
+}
+
+//Get the velocity component on Down (vertical) axis
+int32_t SFE_UBLOX_GPS::getVelD(uint16_t maxWait)
+{
+if (moduleQueried.velD == false)
+    getPVT(maxWait);
+moduleQueried.velD = false; //Since we are about to give this to user, mark this data as stale
+moduleQueried.all = false;
+
+return (velD);
+}
+
+//Get the velocity accuracy estimate in (mm/s)
+uint32_t SFE_UBLOX_GPS::getSAcc(uint16_t maxWait)
+{
+if (moduleQueried.sAcc == false)
+    getPVT(maxWait);
+moduleQueried.sAcc = false; //Since we are about to give this to user, mark this data as stale
+moduleQueried.all = false;
+
+return (sAcc);
+}
+
+//Get the heading accuracy estimage in (deg * 1E-5)
+uint32_t SFE_UBLOX_GPS::getHeadAcc(uint16_t maxWait)
+{
+if (moduleQueried.headAcc == false)
+    getPVT(maxWait);
+moduleQueried.headAcc = false; //Since we are about to give this to user, mark this data as stale
+moduleQueried.all = false;
+
+return (headAcc);
+}
+
+
 //Get the current protocol version of the Ublox module we're communicating with
 //This is helpful when deciding if we should call the high-precision Lat/Long (HPPOSLLH) or the regular (POSLLH)
 uint8_t SFE_UBLOX_GPS::getProtocolVersionHigh(uint16_t maxWait)
@@ -2644,8 +2711,13 @@ void SFE_UBLOX_GPS::flushPVT()
   moduleQueried.SIV = false;
   moduleQueried.fixType = false;
   moduleQueried.carrierSolution = false;
+  moduleQueried.velN = false;
+  moduleQueried.velE = false;
+  moduleQueried.velD = false;
   moduleQueried.groundSpeed = false;
   moduleQueried.headingOfMotion = false;
+  moduleQueried.sAcc = false;
+  moduleQueried.headAcc = false;
   moduleQueried.pDOP = false;
 }
 

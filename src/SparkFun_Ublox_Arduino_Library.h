@@ -490,9 +490,17 @@ public:
 	uint8_t getSIV(uint16_t maxWait = getPVTmaxWait);				  //Returns number of sats used in fix
 	uint8_t getFixType(uint16_t maxWait = getPVTmaxWait);			  //Returns the type of fix: 0=no, 3=3D, 4=GNSS+Deadreckoning
 	uint8_t getCarrierSolutionType(uint16_t maxWait = getPVTmaxWait); //Returns RTK solution: 0=no, 1=float solution, 2=fixed solution
-	int32_t getGroundSpeed(uint16_t maxWait = getPVTmaxWait);		  //Returns speed in mm/s
+
+    int32_t getVelN(uint16_t maxWait = getPVTmaxWait);	              //(mm/s)
+    int32_t getVelE(uint16_t maxWait = getPVTmaxWait);	              //(mm/s)	
+    int32_t getVelD(uint16_t maxWait = getPVTmaxWait);	              //(mm/s)	
+	    
+    int32_t getGroundSpeed(uint16_t maxWait = getPVTmaxWait);		  //Returns speed in mm/s
 	int32_t getHeading(uint16_t maxWait = getPVTmaxWait);			  //Returns heading in degrees * 10^-7
+	uint32_t getSAcc(uint16_t maxWait = getPVTmaxWait);	              //(mm/s)	
+    uint32_t getHeadAcc(uint16_t maxWait = getPVTmaxWait);	          //(deg * 1E-5)	
 	uint16_t getPDOP(uint16_t maxWait = getPVTmaxWait);				  //Returns positional dillution of precision * 10^-2
+
 	uint16_t getYear(uint16_t maxWait = getPVTmaxWait);
 	uint8_t getMonth(uint16_t maxWait = getPVTmaxWait);
 	uint8_t getDay(uint16_t maxWait = getPVTmaxWait);
@@ -641,6 +649,14 @@ public:
 	int32_t groundSpeed;	 //mm/s
 	int32_t headingOfMotion; //degrees * 10^-5
 	uint16_t pDOP;			 //Positional dilution of precision
+
+    int32_t velN;           //(mm/s)
+    int32_t velE;           //(mm/s)
+    int32_t velD;           //(mm/s)
+    uint32_t sAcc;          //speed accuracy estimate (mm/s)
+    uint32_t headAcc;       //heading accuracy estimate (deg) * 1E-5
+    //uint32_t speed3D; //speed 3D (cm/s)
+
 	uint8_t versionLow;		 //Loaded from getProtocolVersion().
 	uint8_t versionHigh;
 
@@ -742,9 +758,17 @@ private:
 		uint32_t SIV : 1;
 		uint32_t fixType : 1;
 		uint32_t carrierSolution : 1;
+
+        uint32_t velN : 1;
+        uint32_t velE : 1;
+        uint32_t velD : 1;
+
 		uint32_t groundSpeed : 1;
 		uint32_t headingOfMotion : 1;
+        uint32_t sAcc : 1;
+        uint32_t headAcc : 1;
 		uint32_t pDOP : 1;
+
 		uint32_t versionNumber : 1;
 	} moduleQueried;
 
