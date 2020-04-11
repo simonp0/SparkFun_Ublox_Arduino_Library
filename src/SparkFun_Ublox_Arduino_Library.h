@@ -491,14 +491,14 @@ public:
 	uint8_t getFixType(uint16_t maxWait = getPVTmaxWait);			  //Returns the type of fix: 0=no, 3=3D, 4=GNSS+Deadreckoning
 	uint8_t getCarrierSolutionType(uint16_t maxWait = getPVTmaxWait); //Returns RTK solution: 0=no, 1=float solution, 2=fixed solution
 
-    int32_t getVelN(uint16_t maxWait = getPVTmaxWait);	              //(mm/s)
-    int32_t getVelE(uint16_t maxWait = getPVTmaxWait);	              //(mm/s)	
-    int32_t getVelD(uint16_t maxWait = getPVTmaxWait);	              //(mm/s)	
+    int32_t getVelN(uint16_t maxWait = getPVTmaxWait);	              //Returns the speed on North axis (mm/s)
+    int32_t getVelE(uint16_t maxWait = getPVTmaxWait);	              //Returns the speed on East axis (mm/s)	
+    int32_t getVelD(uint16_t maxWait = getPVTmaxWait);	              //Returns the speed on Down (vertical) axis (mm/s)	
 	    
     int32_t getGroundSpeed(uint16_t maxWait = getPVTmaxWait);		  //Returns speed in mm/s
 	int32_t getHeading(uint16_t maxWait = getPVTmaxWait);			  //Returns heading in degrees * 10^-7
-	uint32_t getSAcc(uint16_t maxWait = getPVTmaxWait);	              //(mm/s)	
-    uint32_t getHeadAcc(uint16_t maxWait = getPVTmaxWait);	          //(deg * 1E-5)	
+	uint32_t getSAcc(uint16_t maxWait = getPVTmaxWait);	              //Returns speed accuracy estimate (mm/s)	
+    uint32_t getHeadAcc(uint16_t maxWait = getPVTmaxWait);	          //Returns heading accuracy estimate (deg * 1E-5)	
 	uint16_t getPDOP(uint16_t maxWait = getPVTmaxWait);				  //Returns positional dillution of precision * 10^-2
 
 	uint16_t getYear(uint16_t maxWait = getPVTmaxWait);
